@@ -705,15 +705,10 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Sora', sans-serif; font-weight: 700; }
   border-radius: 12px;
   padding: 2.5rem 2rem;
   text-align: center;
-  transition: all 0.4s ease;
+  transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   position: relative;
   overflow: hidden;
-}
-
-.score-card:hover {
-  transform: translateY(-4px);
-  border-color: rgba(91,192,235,0.3);
-  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  will-change: transform, opacity, filter;
 }
 
 .score-card::before {
@@ -721,11 +716,29 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Sora', sans-serif; font-weight: 700; }
   position: absolute;
   top: 0; left: 0;
   width: 100%; height: 3px;
+  z-index: 1;
 }
 
 .score-card.high::before { background: linear-gradient(90deg, #5BC0EB, #3A506B); }
 .score-card.medium::before { background: linear-gradient(90deg, #f0ad4e, #3A506B); }
 .score-card.low::before { background: linear-gradient(90deg, #ff6b6b, #3A506B); }
+
+/* ── Hover effect: dim all, highlight one ── */
+.diagnostic-scores:hover .score-card {
+  opacity: 0.3;
+  transform: scale(0.92);
+  filter: blur(2px);
+  border-color: rgba(58,80,107,0.1);
+}
+
+.diagnostic-scores:hover .score-card:hover {
+  opacity: 1;
+  transform: scale(1.06);
+  filter: blur(0);
+  border-color: rgba(91,192,235,0.3);
+  box-shadow: 0 30px 80px rgba(0,0,0,0.5);
+  background: #232731;
+}
 
 .score-value {
   font-family: 'Sora', sans-serif;
@@ -733,6 +746,7 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Sora', sans-serif; font-weight: 700; }
   font-size: 3.5rem;
   letter-spacing: 2px;
   margin-bottom: 0.5rem;
+  transition: color 0.4s ease;
 }
 
 .score-card.high .score-value { color: #5BC0EB; }
@@ -746,6 +760,7 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Sora', sans-serif; font-weight: 700; }
   color: #D6DCE5;
   letter-spacing: 1px;
   margin-bottom: 0.3rem;
+  transition: color 0.4s ease;
 }
 
 .score-desc {
@@ -753,6 +768,15 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Sora', sans-serif; font-weight: 700; }
   font-weight: 300;
   font-size: 0.85rem;
   color: rgba(214,220,229,0.4);
+  transition: color 0.4s ease;
+}
+
+.diagnostic-scores:hover .score-card:hover .score-label {
+  color: #ffffff;
+}
+
+.diagnostic-scores:hover .score-card:hover .score-desc {
+  color: rgba(214,220,229,0.7);
 }
 
 .score-bar {
@@ -774,6 +798,15 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Sora', sans-serif; font-weight: 700; }
 .score-card.high .score-bar-fill { background: linear-gradient(90deg, #5BC0EB, #7dcff0); }
 .score-card.medium .score-bar-fill { background: linear-gradient(90deg, #f0ad4e, #f5c842); }
 .score-card.low .score-bar-fill { background: linear-gradient(90deg, #ff6b6b, #ff8e8e); }
+
+/* ── Responsive: disable dim effect on touch devices ── */
+@media (hover: none) {
+  .diagnostic-scores:hover .score-card {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
 
 .diagnostic-cta {
   text-align: center;
