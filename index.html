@@ -273,6 +273,71 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Sora', sans-serif; font-weight: 700; }
   max-width: 900px;
 }
 
+.hero-logo {
+  font-family: 'Sora', sans-serif;
+  font-weight: 800;
+  font-size: 6rem;
+  color: #D6DCE5;
+  text-transform: uppercase;
+  line-height: 1;
+  margin-bottom: 1.5rem;
+  display: flex;
+  justify-content: center;
+  gap: 0.18em;
+  position: relative;
+  perspective: 800px;
+}
+
+/* ── Letter surge animation ── */
+.hero-letter {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(60px) scale(0.5);
+  filter: blur(12px);
+  animation: letterSurge 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: transform, opacity, filter;
+}
+
+.hero-letter:nth-child(1) { animation-delay: 0.1s; }
+.hero-letter:nth-child(2) { animation-delay: 0.2s; }
+.hero-letter:nth-child(3) { animation-delay: 0.3s; }
+.hero-letter:nth-child(4) { animation-delay: 0.4s; }
+.hero-letter:nth-child(5) { animation-delay: 0.5s; }
+.hero-letter:nth-child(6) { animation-delay: 0.6s; }
+.hero-letter:nth-child(7) { animation-delay: 0.7s; }
+
+@keyframes letterSurge {
+  0% {
+    opacity: 0;
+    transform: translateY(60px) scale(0.5);
+    filter: blur(12px);
+    color: #5BC0EB;
+    text-shadow: 0 0 0px rgba(91,192,235,0);
+  }
+  40% {
+    opacity: 1;
+    color: #7dcff0;
+    filter: blur(4px);
+  }
+  70% {
+    transform: translateY(-8px) scale(1.08);
+    filter: blur(0);
+    text-shadow:
+      0 0 30px rgba(91,192,235,0.2),
+      0 0 60px rgba(91,192,235,0.1);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+    color: #D6DCE5;
+    text-shadow:
+      0 0 20px rgba(91,192,235,0.06),
+      0 0 40px rgba(91,192,235,0.04);
+  }
+}
+
+/* ── Badge, title, subtitle cascade ── */
 .hero-badge {
   display: inline-block;
   font-family: 'Space Grotesk', sans-serif;
@@ -286,64 +351,8 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Sora', sans-serif; font-weight: 700; }
   border-radius: 20px;
   margin-bottom: 2rem;
   opacity: 0;
-  animation: fadeInUp 1s ease 0.3s forwards;
-}
-
-.hero-logo {
-  font-family: 'Sora', sans-serif;
-  font-weight: 800;
-  font-size: 6rem;
-  color: #D6DCE5;
-  letter-spacing: 18px;
-  text-transform: uppercase;
-  line-height: 1;
-  margin-bottom: 1.5rem;
-  opacity: 0;
-  animation: fadeInUp 1s ease 0.5s forwards;
-  position: relative;
-  text-shadow:
-    0 0 20px rgba(91,192,235,0.06),
-    0 0 40px rgba(91,192,235,0.04),
-    0 0 80px rgba(91,192,235,0.02);
-}
-
-.hero-logo::before {
-  content: 'NYVORIS';
-  position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: inherit;
-  font-weight: inherit;
-  font-size: inherit;
-  letter-spacing: inherit;
-  text-transform: inherit;
-  color: transparent;
-  filter: blur(8px);
-  -webkit-filter: blur(8px);
-  background: linear-gradient(135deg, rgba(91,192,235,0.15), rgba(91,192,235,0.05));
-  -webkit-background-clip: text;
-  background-clip: text;
-  z-index: -1;
-  pointer-events: none;
-}
-
-.hero-logo span {
-  color: #5BC0EB;
-  position: relative;
-}
-
-.hero-logo span::after {
-  content: '';
-  position: absolute;
-  bottom: 4px;
-  left: 0;
-  width: 100%;
-  height: 3px;
-  background: #5BC0EB;
-  border-radius: 2px;
+  transform: translateY(30px);
+  animation: fadeInUp 0.8s ease 0.9s forwards;
 }
 
 .hero-title {
@@ -355,7 +364,8 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Sora', sans-serif; font-weight: 700; }
   line-height: 1.2;
   margin-bottom: 1.5rem;
   opacity: 0;
-  animation: fadeInUp 1s ease 0.8s forwards;
+  transform: translateY(30px);
+  animation: fadeInUp 0.8s ease 1.2s forwards;
 }
 
 .hero-subtitle {
@@ -367,7 +377,8 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Sora', sans-serif; font-weight: 700; }
   max-width: 650px;
   margin: 0 auto 2.5rem auto;
   opacity: 0;
-  animation: fadeInUp 1s ease 1s forwards;
+  transform: translateY(30px);
+  animation: fadeInUp 0.8s ease 1.6s forwards;
 }
 
 .hero-buttons {
@@ -376,120 +387,8 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Sora', sans-serif; font-weight: 700; }
   justify-content: center;
   flex-wrap: wrap;
   opacity: 0;
-  animation: fadeInUp 1s ease 1.2s forwards;
-}
-
-.btn-primary {
-  font-family: 'Sora', sans-serif;
-  font-weight: 600;
-  font-size: 0.85rem;
-  color: #0D1117;
-  background: #5BC0EB;
-  padding: 1rem 2.5rem;
-  border-radius: 4px;
-  text-decoration: none;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  transition: all 0.4s ease;
-  border: none;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.8rem;
-}
-
-.btn-primary:hover {
-  background: #7dcff0;
-  transform: translateY(-2px);
-  box-shadow: 0 12px 40px rgba(91,192,235,0.25);
-}
-
-.btn-secondary {
-  font-family: 'Sora', sans-serif;
-  font-weight: 500;
-  font-size: 0.85rem;
-  color: #D6DCE5;
-  background: transparent;
-  padding: 1rem 2.5rem;
-  border-radius: 4px;
-  text-decoration: none;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  transition: all 0.4s ease;
-  border: 1px solid rgba(58,80,107,0.4);
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.8rem;
-}
-
-.btn-secondary:hover {
-  border-color: #5BC0EB;
-  color: #5BC0EB;
-  transform: translateY(-2px);
-}
-
-/* Hero indicators */
-.hero-indicators {
-  display: flex;
-  gap: 2rem;
-  position: relative;
-  z-index: 2;
-  opacity: 0;
-  animation: fadeIn 1.5s ease 2s forwards;
-  margin-top: 2rem;
-  padding-top: 2rem;
-  border-top: 1px solid rgba(58,80,107,0.15);
-}
-
-.hero-indicator {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.4rem;
-}
-
-.hero-indicator-value {
-  font-family: 'Sora', sans-serif;
-  font-weight: 700;
-  font-size: 1.6rem;
-  color: #5BC0EB;
-  letter-spacing: 2px;
-}
-
-.hero-indicator-label {
-  font-family: 'Space Grotesk', sans-serif;
-  font-weight: 300;
-  font-size: 0.65rem;
-  color: #3A506B;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-}
-
-/* Scroll hint */
-.scroll-hint {
-  position: relative;
-  z-index: 2;
-  opacity: 0;
-  animation: fadeIn 2s ease 3s forwards;
-  margin-top: 1.5rem;
-}
-
-.scroll-hint-line {
-  width: 1px;
-  height: 40px;
-  background: linear-gradient(180deg, #5BC0EB, transparent);
-  margin: 0 auto 0.5rem auto;
-  animation: scrollPulse 2s ease-in-out infinite;
-}
-
-.scroll-hint-text {
-  font-family: 'Space Grotesk', sans-serif;
-  font-weight: 300;
-  font-size: 0.6rem;
-  color: #3A506B;
-  letter-spacing: 3px;
-  text-transform: uppercase;
+  transform: translateY(30px);
+  animation: fadeInUp 0.8s ease 2s forwards;
 }
 
 /* ============================================================
@@ -1309,7 +1208,7 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Sora', sans-serif; font-weight: 700; }
    RESPONSIVE
    ============================================================ */
 @media (max-width: 1024px) {
-  .hero-logo { font-size: 4rem; letter-spacing: 12px; }
+  .hero-logo { font-size: 4rem; gap: 0.15em; }
   .hero-title { font-size: 2rem; }
   .section-title { font-size: 2.2rem; }
   .problem-grid { gap: 2rem; }
@@ -1335,7 +1234,7 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Sora', sans-serif; font-weight: 700; }
   }
 
   .hero { padding: 5rem 1.5rem 3rem 1.5rem; }
-  .hero-logo { font-size: 2.8rem; letter-spacing: 8px; }
+  .hero-logo { font-size: 2.8rem; gap: 0.12em; }
   .hero-title { font-size: 1.5rem; letter-spacing: 2px; }
   .hero-indicators { gap: 1rem; flex-wrap: wrap; justify-content: center; }
   .contact-social-links { flex-direction: column; align-items: center; }
@@ -1360,7 +1259,7 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Sora', sans-serif; font-weight: 700; }
 }
 
 @media (max-width: 480px) {
-  .hero-logo { font-size: 2rem; letter-spacing: 6px; }
+  .hero-logo { font-size: 2rem; gap: 0.1em; }
   .hero-title { font-size: 1.2rem; }
   .hero-buttons { flex-direction: column; align-items: center; }
   .btn-primary, .btn-secondary { width: 100%; justify-content: center; }
@@ -1409,7 +1308,15 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Sora', sans-serif; font-weight: 700; }
   <div class="hero-inner">
     <div class="hero-content">
       <div class="hero-badge">Ciberseguridad Estratégica</div>
-      <div class="hero-logo">NYVORIS</div>
+      <div class="hero-logo" aria-label="NYVORIS">
+        <span class="hero-letter">N</span>
+        <span class="hero-letter">Y</span>
+        <span class="hero-letter">V</span>
+        <span class="hero-letter">O</span>
+        <span class="hero-letter">R</span>
+        <span class="hero-letter">I</span>
+        <span class="hero-letter">S</span>
+      </div>
       <h1 class="hero-title">¿TU NEGOCIO REALMENTE<br>ESTÁ PROTEGIDO?</h1>
       <p class="hero-subtitle">
         Protegemos negocios digitales antes de que pequeñas vulnerabilidades
