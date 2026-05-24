@@ -381,6 +381,69 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Sora', sans-serif; font-weight: 700; }
   animation: fadeInUp 0.8s ease 1.6s forwards;
 }
 
+/* ── Indicators ── */
+.hero-indicators {
+  display: flex;
+  gap: 3rem;
+  justify-content: center;
+  margin-top: 3rem;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.8s ease 2.4s forwards;
+}
+
+.hero-indicator {
+  text-align: center;
+}
+
+.hero-indicator-value {
+  font-family: 'Sora', sans-serif;
+  font-weight: 700;
+  font-size: 1.6rem;
+  color: #5BC0EB;
+  letter-spacing: 1px;
+  margin-bottom: 0.2rem;
+}
+
+.hero-indicator-label {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 300;
+  font-size: 0.7rem;
+  color: #3A506B;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+/* ── Scroll hint ── */
+.scroll-hint {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  opacity: 0;
+  animation: fadeInUp 0.8s ease 3s forwards;
+}
+
+.scroll-hint-line {
+  width: 1px;
+  height: 30px;
+  background: linear-gradient(180deg, #3A506B, transparent);
+  animation: scrollPulse 2s ease infinite;
+}
+
+.scroll-hint-text {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 300;
+  font-size: 0.6rem;
+  color: #3A506B;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+
 .hero-buttons {
   display: flex;
   gap: 1.5rem;
@@ -389,6 +452,72 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Sora', sans-serif; font-weight: 700; }
   opacity: 0;
   transform: translateY(30px);
   animation: fadeInUp 0.8s ease 2s forwards;
+}
+
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+.btn-primary,
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: 'Sora', sans-serif;
+  font-weight: 600;
+  font-size: 0.8rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 0.9rem 2rem;
+  border-radius: 6px;
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  cursor: pointer;
+  border: none;
+  outline: none;
+  line-height: 1.2;
+}
+
+.btn-primary {
+  color: #0D1117;
+  background: #5BC0EB;
+  border: 1px solid #5BC0EB;
+}
+
+.btn-primary:hover {
+  background: #7dcff0;
+  border-color: #7dcff0;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(91,192,235,0.25);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+.btn-secondary {
+  color: #D6DCE5;
+  background: transparent;
+  border: 1px solid rgba(58,80,107,0.4);
+}
+
+.btn-secondary:hover {
+  border-color: rgba(91,192,235,0.4);
+  color: #5BC0EB;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+}
+
+.btn-secondary:active {
+  transform: translateY(0);
+}
+
+/* Button disabled state */
+.btn-primary:disabled,
+.btn-secondary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: none !important;
 }
 
 /* ============================================================
