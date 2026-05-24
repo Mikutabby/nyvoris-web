@@ -1106,6 +1106,38 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Sora', sans-serif; font-weight: 700; }
   color: rgba(214,220,229,0.2);
 }
 
+/* ── Validation states ── */
+.form-group input:invalid:not(:placeholder-shown),
+.form-group textarea:invalid:not(:placeholder-shown) {
+  border-color: rgba(255,107,107,0.4);
+  box-shadow: 0 0 0 3px rgba(255,107,107,0.08);
+}
+
+.form-group input:focus:invalid:not(:placeholder-shown) {
+  border-color: #ff6b6b;
+  box-shadow: 0 0 0 3px rgba(255,107,107,0.15);
+}
+
+.form-group input:valid:not(:placeholder-shown),
+.form-group textarea:valid:not(:placeholder-shown) {
+  border-color: rgba(91,192,235,0.25);
+}
+
+.form-group .error-message {
+  display: none;
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 300;
+  font-size: 0.75rem;
+  color: #ff6b6b;
+  margin-top: 0.4rem;
+  letter-spacing: 0.5px;
+}
+
+.form-group .error-message.show {
+  display: block;
+  animation: fadeIn 0.3s ease;
+}
+
 .form-group select {
   cursor: pointer;
   appearance: none;
@@ -1710,17 +1742,26 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Sora', sans-serif; font-weight: 700; }
         <div class="form-row">
           <div class="form-group">
             <label for="formName">Nombre completo</label>
-            <input type="text" id="formName" placeholder="Tu nombre" required>
+            <input type="text" id="formName" placeholder="Tu nombre" required
+                   pattern="[A-Za-zÁáÉéÍíÓóÚúÜüÑñ\s]+"
+                   title="Solo letras — no se permiten números">
+            <span class="error-message" id="nameError">Solo se permiten letras, no números.</span>
           </div>
           <div class="form-group">
             <label for="formEmail">Correo electrónico</label>
-            <input type="email" id="formEmail" placeholder="tu@correo.com" required>
+            <input type="email" id="formEmail" placeholder="tu@correo.com" required
+                   pattern="[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$"
+                   title="Ingresa un correo válido, ejemplo: tu@correo.com">
+            <span class="error-message" id="emailError">Ingresa un correo electrónico válido.</span>
           </div>
         </div>
         <div class="form-row">
           <div class="form-group">
             <label for="formPhone">Teléfono</label>
-            <input type="tel" id="formPhone" placeholder="+57 300 000 0000">
+            <input type="tel" id="formPhone" placeholder="+57 300 000 0000"
+                   pattern="[\+\d\s\(\)\-]+"
+                   title="Solo números — no se permiten letras">
+            <span class="error-message" id="phoneError">Solo se permiten números y símbolos (+ -).</span>
           </div>
           <div class="form-group">
             <label for="formType">Tipo de solicitud</label>
@@ -1734,7 +1775,8 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Sora', sans-serif; font-weight: 700; }
         </div>
         <div class="form-group">
           <label for="formMessage">Mensaje / Solicitud</label>
-          <textarea id="formMessage" rows="4" placeholder="Cuéntanos en qué podemos ayudarte..." required></textarea>
+          <textarea id="formMessage" rows="4" placeholder="Cuéntanos en qué podemos ayudarte..." required minlength="10"></textarea>
+          <span class="error-message" id="messageError">Escribe al menos 10 caracteres.</span>
         </div>
         <button type="submit" class="btn-primary" style="width:100%; justify-content:center; padding:1rem;">
           Enviar solicitud
@@ -1962,19 +2004,67 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Sora', sans-serif; font-weight: 700; }
   });
 
   // ============================================================
-  // CONTACT FORM HANDLER
+  // CONTACT FORM HANDLER — VALIDATION
   // ============================================================
   const contactForm = document.getElementById('contactForm');
   const formSuccess = document.getElementById('formSuccess');
 
+  // Show error message for an input
+  function showFieldError(input, errorEl) {
+    if (!input.validity.valid && input.value.trim() !== '') {
+      errorEl.classList.add('show');
+    } else {
+      errorEl.classList.remove('show');
+    }
+  }
+
+  // Clear error when user types
+  function setupFieldValidation(inputId, errorId) {
+    const input = document.getElementById(inputId);
+    const error = document.getElementById(errorId);
+    if (!input || !error) return;
+    input.addEventListener('input', function() {
+      showFieldError(input, error);
+    });
+    input.addEventListener('blur', function() {
+      showFieldError(input, error);
+    });
+  }
+
+  setupFieldValidation('formName', 'nameError');
+  setupFieldValidation('formEmail', 'emailError');
+  setupFieldValidation('formPhone', 'phoneError');
+  setupFieldValidation('formMessage', 'messageError');
+
   if (contactForm) {
     contactForm.addEventListener('submit', function(e) {
       e.preventDefault();
+
+      // Trigger validation on all fields
+      const inputs = contactForm.querySelectorAll('input, textarea, select');
+      let allValid = true;
+      inputs.forEach(function(input) {
+        if (!input.validity.valid) {
+          allValid = false;
+          // Trigger blur to show error
+          input.dispatchEvent(new Event('blur'));
+        }
+      });
+
+      if (!allValid) return;
+
       // Simulate sending — in production, connect to a backend
       contactForm.style.display = 'none';
       formSuccess.classList.add('show');
       // Log submission
       console.log('NYVORIS — Solicitud de contacto recibida');
+      console.log({
+        nombre: document.getElementById('formName').value,
+        email: document.getElementById('formEmail').value,
+        telefono: document.getElementById('formPhone').value,
+        tipo: document.getElementById('formType').value,
+        mensaje: document.getElementById('formMessage').value
+      });
     });
   }
 
