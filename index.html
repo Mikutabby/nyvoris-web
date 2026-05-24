@@ -1046,6 +1046,53 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Sora', sans-serif; font-weight: 700; }
 }
 
 /* ============================================================
+   SOCIAL LINKS
+   ============================================================ */
+.contact-social {
+  text-align: center;
+  margin-top: 2.5rem;
+}
+
+.contact-social-label {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 300;
+  font-size: 0.7rem;
+  color: #3A506B;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+}
+
+.contact-social-links {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+.contact-social-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 400;
+  font-size: 0.9rem;
+  color: rgba(214,220,229,0.5);
+  text-decoration: none;
+  padding: 0.7rem 1.5rem;
+  border: 1px solid rgba(58,80,107,0.25);
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  background: rgba(28,31,38,0.5);
+}
+
+.contact-social-link:hover {
+  color: #5BC0EB;
+  border-color: rgba(91,192,235,0.3);
+  background: rgba(91,192,235,0.05);
+  transform: translateY(-2px);
+}
+
+/* ============================================================
    FOOTER
    ============================================================ */
 .footer {
@@ -1071,6 +1118,28 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Sora', sans-serif; font-weight: 700; }
   font-size: 0.8rem;
   color: #3A506B;
   letter-spacing: 1px;
+}
+
+.footer-social {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.footer-social-link {
+  color: #3A506B;
+  transition: all 0.3s ease;
+  padding: 0.4rem;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.footer-social-link:hover {
+  color: #5BC0EB;
+  background: rgba(91,192,235,0.06);
 }
 
 /* ============================================================
@@ -1142,6 +1211,7 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Sora', sans-serif; font-weight: 700; }
   .hero-logo { font-size: 2.8rem; letter-spacing: 8px; }
   .hero-title { font-size: 1.5rem; letter-spacing: 2px; }
   .hero-indicators { gap: 1rem; flex-wrap: wrap; justify-content: center; }
+  .contact-social-links { flex-direction: column; align-items: center; }
 
   .problem-grid,
   .diff-container,
@@ -1184,7 +1254,6 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Sora', sans-serif; font-weight: 700; }
     <li><a href="#diferenciador">Diferenciador</a></li>
     <li><a href="#diagnostico">Diagnóstico</a></li>
     <li><a href="#servicios">Servicios</a></li>
-    <li><a href="#contacto">Contacto</a></li>
     <li><a href="#contacto" class="navbar-cta">Contáctanos</a></li>
   </ul>
 </nav>
@@ -1584,6 +1653,20 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Sora', sans-serif; font-weight: 700; }
       </div>
     </div>
 
+    <div class="contact-social reveal reveal-delay-2">
+      <div class="contact-social-label">Síguenos en redes</div>
+      <div class="contact-social-links">
+        <a href="https://www.instagram.com/nyvoris_/" target="_blank" rel="noopener noreferrer" class="contact-social-link" aria-label="Instagram">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          Instagram
+        </a>
+        <a href="https://www.facebook.com/profile.php?id=61589966648075" target="_blank" rel="noopener noreferrer" class="contact-social-link" aria-label="Facebook">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+          Facebook
+        </a>
+      </div>
+    </div>
+
     <div class="cta-final-sub reveal reveal-delay-3" style="text-align:center; margin-top:3rem;">
       Protegemos lo que construyes.
     </div>
@@ -1597,6 +1680,14 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Sora', sans-serif; font-weight: 700; }
   <div class="footer-logo">NYVORIS</div>
   <div class="footer-text">
     Ciberseguridad estratégica — Protegemos lo que construyes
+  </div>
+  <div class="footer-social">
+    <a href="https://www.instagram.com/nyvoris_/" target="_blank" rel="noopener noreferrer" class="footer-social-link" aria-label="Instagram">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+    </a>
+    <a href="https://www.facebook.com/profile.php?id=61589966648075" target="_blank" rel="noopener noreferrer" class="footer-social-link" aria-label="Facebook">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+    </a>
   </div>
   <div class="footer-text" style="margin-top:0.5rem; font-size:0.65rem;">
     © 2026 NYVORIS. Todos los derechos reservados.
