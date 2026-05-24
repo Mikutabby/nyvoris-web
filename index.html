@@ -207,11 +207,21 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Sora', sans-serif; font-weight: 700; }
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   text-align: center;
-  padding: 2rem;
+  padding: 6rem 2rem 5rem 2rem;
   position: relative;
   overflow: hidden;
+}
+
+.hero-inner {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  position: relative;
+  z-index: 2;
 }
 
 /* Particles canvas */
@@ -393,15 +403,15 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Sora', sans-serif; font-weight: 700; }
 
 /* Hero indicators */
 .hero-indicators {
-  position: absolute;
-  bottom: 3rem;
-  left: 50%;
-  transform: translateX(-50%);
   display: flex;
-  gap: 1.5rem;
+  gap: 2rem;
+  position: relative;
   z-index: 2;
   opacity: 0;
   animation: fadeIn 1.5s ease 2s forwards;
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(58,80,107,0.15);
 }
 
 .hero-indicator {
@@ -430,13 +440,11 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Sora', sans-serif; font-weight: 700; }
 
 /* Scroll hint */
 .scroll-hint {
-  position: absolute;
-  bottom: 1.5rem;
-  left: 50%;
-  transform: translateX(-50%);
+  position: relative;
   z-index: 2;
   opacity: 0;
   animation: fadeIn 2s ease 3s forwards;
+  margin-top: 1.5rem;
 }
 
 .scroll-hint-line {
@@ -1024,8 +1032,10 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Sora', sans-serif; font-weight: 700; }
     border-bottom: 1px solid rgba(58,80,107,0.15);
   }
 
+  .hero { padding: 5rem 1.5rem 3rem 1.5rem; }
   .hero-logo { font-size: 2.8rem; letter-spacing: 8px; }
   .hero-title { font-size: 1.5rem; letter-spacing: 2px; }
+  .hero-indicators { gap: 1rem; flex-wrap: wrap; justify-content: center; }
 
   .problem-grid,
   .diff-container,
@@ -1091,45 +1101,47 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Sora', sans-serif; font-weight: 700; }
   <!-- Grid overlay -->
   <div class="grid-overlay"></div>
 
-  <div class="hero-content">
-    <div class="hero-badge">Ciberseguridad Estratégica</div>
-    <div class="hero-logo">NYVORIS</div>
-    <h1 class="hero-title">¿TU NEGOCIO REALMENTE<br>ESTÁ PROTEGIDO?</h1>
-    <p class="hero-subtitle">
-      Protegemos negocios digitales antes de que pequeñas vulnerabilidades
-      afecten estabilidad, accesos o crecimiento.
-    </p>
-    <div class="hero-buttons">
-      <a href="#diagnostico" class="btn-primary">
-        Solicitar diagnóstico
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-      </a>
-      <a href="#servicios" class="btn-secondary">
-        Ver servicios
-      </a>
+  <div class="hero-inner">
+    <div class="hero-content">
+      <div class="hero-badge">Ciberseguridad Estratégica</div>
+      <div class="hero-logo">NYVORIS</div>
+      <h1 class="hero-title">¿TU NEGOCIO REALMENTE<br>ESTÁ PROTEGIDO?</h1>
+      <p class="hero-subtitle">
+        Protegemos negocios digitales antes de que pequeñas vulnerabilidades
+        afecten estabilidad, accesos o crecimiento.
+      </p>
+      <div class="hero-buttons">
+        <a href="#diagnostico" class="btn-primary">
+          Solicitar diagnóstico
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+        <a href="#servicios" class="btn-secondary">
+          Ver servicios
+        </a>
+      </div>
     </div>
-  </div>
 
-  <!-- Indicadores -->
-  <div class="hero-indicators">
-    <div class="hero-indicator">
-      <div class="hero-indicator-value">+50</div>
-      <div class="hero-indicator-label">Negocios protegidos</div>
+    <!-- Indicadores -->
+    <div class="hero-indicators">
+      <div class="hero-indicator">
+        <div class="hero-indicator-value">+50</div>
+        <div class="hero-indicator-label">Negocios protegidos</div>
+      </div>
+      <div class="hero-indicator">
+        <div class="hero-indicator-value">97%</div>
+        <div class="hero-indicator-label">Tasa de estabilidad</div>
+      </div>
+      <div class="hero-indicator">
+        <div class="hero-indicator-value">24/7</div>
+        <div class="hero-indicator-label">Monitoreo estratégico</div>
+      </div>
     </div>
-    <div class="hero-indicator">
-      <div class="hero-indicator-value">97%</div>
-      <div class="hero-indicator-label">Tasa de estabilidad</div>
-    </div>
-    <div class="hero-indicator">
-      <div class="hero-indicator-value">24/7</div>
-      <div class="hero-indicator-label">Monitoreo estratégico</div>
-    </div>
-  </div>
 
-  <!-- Scroll hint -->
-  <div class="scroll-hint">
-    <div class="scroll-hint-line"></div>
-    <div class="scroll-hint-text">Desplázate</div>
+    <!-- Scroll hint -->
+    <div class="scroll-hint">
+      <div class="scroll-hint-line"></div>
+      <div class="scroll-hint-text">Desplázate</div>
+    </div>
   </div>
 </section>
 
