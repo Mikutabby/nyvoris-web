@@ -98,6 +98,55 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Sora', sans-serif; font-weight: 700; }
   z-index: 0;
 }
 
+/* ===== BACKGROUND CANVAS (global particles) ===== */
+#bg-canvas {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+/* ===== AMBIENT GRADIENTS (scroll-reactive) ===== */
+.bg-ambient {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  transition: opacity 2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  will-change: opacity, transform;
+}
+
+.bg-ambient {
+  background:
+    radial-gradient(ellipse 600px 400px at 20% 10%, rgba(91,192,235,0.05) 0%, transparent 70%),
+    radial-gradient(ellipse 500px 500px at 80% 90%, rgba(58,80,107,0.05) 0%, transparent 60%);
+  animation: ambientDrift 20s ease-in-out infinite alternate;
+}
+
+.bg-ambient-2 {
+  background:
+    radial-gradient(ellipse 700px 400px at 70% 20%, rgba(91,192,235,0.04) 0%, transparent 70%),
+    radial-gradient(ellipse 400px 600px at 30% 80%, rgba(58,80,107,0.04) 0%, transparent 60%);
+  opacity: 0;
+  animation: ambientDrift2 25s ease-in-out infinite alternate;
+  animation-delay: -10s;
+}
+
+@keyframes ambientDrift {
+  0%   { transform: translate(0, 0) scale(1); }
+  50%  { transform: translate(20px, -15px) scale(1.05); }
+  100% { transform: translate(-10px, 10px) scale(0.98); }
+}
+
+@keyframes ambientDrift2 {
+  0%   { transform: translate(0, 0) scale(1); }
+  50%  { transform: translate(-25px, 20px) scale(1.03); }
+  100% { transform: translate(15px, -10px) scale(0.97); }
+}
+
 /* ============================================================
    NAVBAR
    ============================================================ */
@@ -238,15 +287,6 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Sora', sans-serif; font-weight: 700; }
   width: 100%;
   position: relative;
   z-index: 2;
-}
-
-/* Particles canvas */
-#particles-canvas {
-  position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  z-index: 0;
-  pointer-events: none;
 }
 
 /* Hero geometric lines */
@@ -1485,9 +1525,11 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Sora', sans-serif; font-weight: 700; }
 </head>
 <body>
 
-<!-- ============================================================
-     NAVBAR
-     ============================================================ -->
+<!-- ===== Fondo animado global ===== -->
+<canvas id="bg-canvas"></canvas>
+<div class="bg-ambient" id="bgAmbient"></div>
+<div class="bg-ambient bg-ambient-2" id="bgAmbient2"></div>
+
 <nav class="navbar" id="navbar">
   <a href="#" class="navbar-logo">NYVORIS</a>
   <button class="menu-toggle" id="menuToggle" aria-label="Menú">☰</button>
@@ -1515,9 +1557,6 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Sora', sans-serif; font-weight: 700; }
     <div class="hero-geo-vline"></div>
     <div class="hero-geo-vline"></div>
   </div>
-
-  <!-- Partículas canvas -->
-  <canvas id="particles-canvas"></canvas>
 
   <!-- Grid overlay -->
   <div class="grid-overlay"></div>
@@ -1963,30 +2002,29 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Sora', sans-serif; font-weight: 700; }
   'use strict';
 
   // ============================================================
-  // PARTICLES
+  // PARTICLES — Global background
   // ============================================================
-  const canvas = document.getElementById('particles-canvas');
+  const canvas = document.getElementById('bg-canvas');
   const ctx = canvas.getContext('2d');
   let particles = [];
   let animId;
 
   function resizeCanvas() {
-    const hero = document.getElementById('hero');
-    canvas.width = hero.offsetWidth;
-    canvas.height = hero.offsetHeight;
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
   }
 
   function createParticles() {
     particles = [];
-    const count = Math.min(60, Math.floor(canvas.width * canvas.height / 15000));
+    const count = Math.min(100, Math.floor(canvas.width * canvas.height / 12000));
     for (let i = 0; i < count; i++) {
       particles.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
-        vx: (Math.random() - 0.5) * 0.4,
-        vy: (Math.random() - 0.5) * 0.4,
-        r: Math.random() * 1.8 + 0.5,
-        alpha: Math.random() * 0.4 + 0.1
+        vx: (Math.random() - 0.5) * 0.3,
+        vy: (Math.random() - 0.5) * 0.3,
+        r: Math.random() * 2 + 0.3,
+        alpha: Math.random() * 0.3 + 0.05
       });
     }
   }
@@ -2053,6 +2091,33 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Sora', sans-serif; font-weight: 700; }
       navbar.classList.remove('scrolled');
     }
   });
+
+  // ============================================================
+  // SCROLL AMBIENT — Gradientes que evolucionan
+  // ============================================================
+  var bgAmbient = document.getElementById('bgAmbient');
+  var bgAmbient2 = document.getElementById('bgAmbient2');
+  var docEl = document.documentElement;
+
+  function updateAmbient() {
+    var scrollY = window.scrollY;
+    var maxScroll = docEl.scrollHeight - window.innerHeight;
+    if (maxScroll <= 0) return;
+    var progress = scrollY / maxScroll;
+
+    // Primer gradiente se desvanece lentamente
+    if (bgAmbient) {
+      bgAmbient.style.opacity = 1 - progress * 0.5;
+    }
+
+    // Segundo gradiente aparece gradualmente
+    if (bgAmbient2) {
+      bgAmbient2.style.opacity = progress * 0.6;
+    }
+  }
+
+  window.addEventListener('scroll', updateAmbient);
+  updateAmbient();
 
   // ============================================================
   // MOBILE MENU TOGGLE
