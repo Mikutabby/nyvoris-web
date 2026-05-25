@@ -700,6 +700,99 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Sora', sans-serif; font-weight: 700; }
   font-style: italic;
 }
 
+/* ===== SILENT IMPACT — Estadísticas con diseño premium ===== */
+.silent-impact {
+  background: linear-gradient(135deg, rgba(28,31,38,0.8), rgba(13,17,23,0.4));
+  border: 1px solid rgba(58,80,107,0.2);
+  border-radius: 16px;
+  padding: 2rem 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.silent-impact::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(91,192,235,0.2), transparent);
+}
+
+.silent-impact-header {
+  font-family: 'Sora', sans-serif;
+  font-weight: 600;
+  font-size: 0.75rem;
+  color: #5BC0EB;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  padding: 0 2rem 1.5rem 2rem;
+  border-bottom: 1px solid rgba(58,80,107,0.1);
+}
+
+.silent-impact-item {
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  gap: 1.5rem;
+  padding: 1.5rem 2rem;
+  align-items: start;
+  transition: background 0.3s ease;
+}
+
+.silent-impact-item:hover {
+  background: rgba(91,192,235,0.02);
+}
+
+.silent-impact-item + .silent-impact-item {
+  border-top: 1px solid rgba(58,80,107,0.06);
+}
+
+.silent-impact-number {
+  font-family: 'Sora', sans-serif;
+  font-weight: 800;
+  font-size: 3rem;
+  color: #5BC0EB;
+  line-height: 1;
+  letter-spacing: -1px;
+  position: relative;
+}
+
+.silent-impact-number::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 30px;
+  height: 2px;
+  background: #5BC0EB;
+  border-radius: 1px;
+  opacity: 0.3;
+}
+
+.silent-impact-text {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 300;
+  font-size: 0.95rem;
+  color: rgba(214,220,229,0.55);
+  line-height: 1.7;
+  padding-top: 0.3rem;
+}
+
+.silent-impact-bar {
+  height: 3px;
+  background: rgba(58,80,107,0.15);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-top: 0.8rem;
+}
+
+.silent-impact-bar-fill {
+  height: 100%;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #5BC0EB, rgba(91,192,235,0.3));
+  width: 0;
+  transition: width 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
 /* ============================================================
    DIFFERENTIATOR SECTION
    ============================================================ */
@@ -1521,6 +1614,10 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Sora', sans-serif; font-weight: 700; }
   .contact-social-link { min-width: unset; width: 100%; padding: 0.9rem 1.5rem; }
 
   .footer-social { display: none; }
+  .silent-impact-item { grid-template-columns: 1fr; gap: 0.5rem; padding: 1.2rem 1.5rem; }
+  .silent-impact-number { font-size: 2.2rem; }
+  .silent-impact-number::after { display: none; }
+  .silent-impact-header { padding: 0 1.5rem 1rem 1.5rem; }
 
   .diagnostic-scores {
     grid-template-columns: 1fr;
@@ -1696,29 +1793,41 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Sora', sans-serif; font-weight: 700; }
       </div>
 
       <div class="reveal reveal-delay-3">
-        <div style="padding:1rem;">
-          <div style="font-family:'Sora',sans-serif; font-weight:300; font-size:0.85rem; color:#3A506B; letter-spacing:3px; text-transform:uppercase; margin-bottom:1.5rem;">
-            Impacto silencioso
-          </div>
-          <div style="display:flex; flex-direction:column; gap:1.5rem;">
-            <div style="display:flex; align-items:center; gap:1rem;">
-              <div style="font-family:'Sora',sans-serif; font-weight:800; font-size:2.5rem; color:#5BC0EB; line-height:1;">60%</div>
-              <div style="font-family:'Space Grotesk',sans-serif; font-weight:300; font-size:0.85rem; color:rgba(214,220,229,0.5); line-height:1.4;">
+        <div class="silent-impact">
+          <div class="silent-impact-header">⟡ Impacto silencioso</div>
+
+          <div class="silent-impact-item">
+            <div class="silent-impact-number">60%</div>
+            <div>
+              <div class="silent-impact-text">
                 De las brechas de seguridad empiezan con vulnerabilidades conocidas y sin parchar.
               </div>
-            </div>
-            <div style="width:100%; height:1px; background:linear-gradient(90deg, rgba(58,80,107,0.3), transparent);"></div>
-            <div style="display:flex; align-items:center; gap:1rem;">
-              <div style="font-family:'Sora',sans-serif; font-weight:800; font-size:2.5rem; color:#5BC0EB; line-height:1;">43%</div>
-              <div style="font-family:'Space Grotesk',sans-serif; font-weight:300; font-size:0.85rem; color:rgba(214,220,229,0.5); line-height:1.4;">
-                De los ciberataques afectan a pequeñas y medianas empresas sin preparación.
+              <div class="silent-impact-bar">
+                <div class="silent-impact-bar-fill" data-width="60"></div>
               </div>
             </div>
-            <div style="width:100%; height:1px; background:linear-gradient(90deg, rgba(58,80,107,0.3), transparent);"></div>
-            <div style="display:flex; align-items:center; gap:1rem;">
-              <div style="font-family:'Sora',sans-serif; font-weight:800; font-size:2.5rem; color:#5BC0EB; line-height:1;">82%</div>
-              <div style="font-family:'Space Grotesk',sans-serif; font-weight:300; font-size:0.85rem; color:rgba(214,220,229,0.5); line-height:1.4;">
+          </div>
+
+          <div class="silent-impact-item">
+            <div class="silent-impact-number">43%</div>
+            <div>
+              <div class="silent-impact-text">
+                De los ciberataques afectan a pequeñas y medianas empresas sin preparación.
+              </div>
+              <div class="silent-impact-bar">
+                <div class="silent-impact-bar-fill" data-width="43"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="silent-impact-item">
+            <div class="silent-impact-number">82%</div>
+            <div>
+              <div class="silent-impact-text">
                 De los incidentes se podrían haber prevenido con evaluación y monitoreo estratégico.
+              </div>
+              <div class="silent-impact-bar">
+                <div class="silent-impact-bar-fill" data-width="82"></div>
               </div>
             </div>
           </div>
@@ -2307,7 +2416,7 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Sora', sans-serif; font-weight: 700; }
   // ============================================================
   // SCORE BARS ANIMATION
   // ============================================================
-  const scoreBars = document.querySelectorAll('.score-bar-fill');
+  const allBars = document.querySelectorAll('.score-bar-fill, .silent-impact-bar-fill');
 
   const barObserver = new IntersectionObserver(function(entries) {
     entries.forEach(function(entry) {
@@ -2322,7 +2431,7 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Sora', sans-serif; font-weight: 700; }
     });
   }, { threshold: 0.5 });
 
-  scoreBars.forEach(function(bar) {
+  allBars.forEach(function(bar) {
     barObserver.observe(bar);
   });
 
