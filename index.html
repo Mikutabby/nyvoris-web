@@ -142,6 +142,7 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Sora', sans-serif; font-weight: 700; }
   gap: 2.5rem;
   list-style: none;
   align-items: center;
+  position: relative;
 }
 
 .navbar-links a {
@@ -154,28 +155,35 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Sora', sans-serif; font-weight: 700; }
   text-transform: uppercase;
   transition: color 0.3s ease;
   position: relative;
-}
-
-.navbar-links a::after {
-  content: '';
-  position: absolute;
-  bottom: -4px;
-  left: 0;
-  width: 0;
-  height: 1px;
-  background: #5BC0EB;
-  transition: width 0.3s ease;
+  z-index: 1;
 }
 
 .navbar-links a:hover { color: #D6DCE5; }
-.navbar-links a:hover::after { width: 100%; }
+
+/* Gliding indicator */
+.navbar-indicator {
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #5BC0EB, #7dcff0);
+  border-radius: 2px;
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.navbar-links:hover .navbar-indicator {
+  opacity: 1;
+}
 
 .navbar-cta {
   font-family: 'Sora', sans-serif;
   font-weight: 700;
   font-size: 0.85rem;
   color: #FFFFFF;
-  background: linear-gradient(135deg, #5BC0EB, #4aa8d4);
+  background: #5BC0EB;
   padding: 0.75rem 2.2rem;
   border-radius: 8px;
   text-decoration: none;
@@ -184,27 +192,12 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Sora', sans-serif; font-weight: 700; }
   transition: all 0.3s ease;
   border: none;
   box-shadow: 0 4px 25px rgba(91,192,235,0.3);
-  position: relative;
-  overflow: hidden;
-}
-
-.navbar-cta::before {
-  content: '';
-  position: absolute;
-  top: 0; left: -100%;
-  width: 100%; height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
-  transition: left 0.5s ease;
-}
-
-.navbar-cta:hover::before {
-  left: 100%;
 }
 
 .navbar-cta:hover {
-  background: linear-gradient(135deg, #7dcff0, #5BC0EB);
+  background: #7dcff0;
   transform: translateY(-2px);
-  box-shadow: 0 8px 35px rgba(91,192,235,0.4);
+  box-shadow: 0 8px 35px rgba(91,192,235,0.45);
 }
 
 .navbar-cta:active {
@@ -1437,6 +1430,8 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Sora', sans-serif; font-weight: 700; }
   .navbar-links { display: none; }
   .menu-toggle { display: block; }
 
+  .navbar-indicator { display: none; }
+
   .navbar-links.open {
     display: flex;
     flex-direction: column;
@@ -1502,6 +1497,7 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Sora', sans-serif; font-weight: 700; }
     <li><a href="#diagnostico">Diagnóstico</a></li>
     <li><a href="#servicios">Servicios</a></li>
     <li><a href="#contacto" class="navbar-cta">Contáctanos</a></li>
+    <li class="navbar-indicator" id="navIndicator"></li>
   </ul>
 </nav>
 
@@ -2074,6 +2070,51 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Sora', sans-serif; font-weight: 700; }
       navLinks.classList.remove('open');
     });
   });
+
+  // ============================================================
+  // NAVBAR GLIDING INDICATOR
+  // ============================================================
+  var navIndicator = document.getElementById('navIndicator');
+  var navLinkItems = navLinks.querySelectorAll('li a:not(.navbar-cta)');
+
+  function moveIndicator(link) {
+    if (!navIndicator) return;
+    var rect = link.getBoundingClientRect();
+    var ulRect = navLinks.getBoundingClientRect();
+    navIndicator.style.left = (rect.left - ulRect.left) + 'px';
+    navIndicator.style.width = rect.width + 'px';
+    navIndicator.style.opacity = '1';
+  }
+
+  function resetIndicator() {
+    if (!navIndicator) return;
+    navIndicator.style.opacity = '0';
+  }
+
+  navLinkItems.forEach(function(link) {
+    link.addEventListener('mouseenter', function() {
+      moveIndicator(link);
+    });
+  });
+
+  navLinks.addEventListener('mouseleave', function() {
+    // Check if any link inside is still hovered (for the indicator to stay)
+    var hovered = navLinks.querySelector('li a:not(.navbar-cta):hover');
+    if (!hovered) {
+      resetIndicator();
+    }
+  });
+
+  // Set initial indicator position on page load (active link based on scroll)
+  // For now, just position it on the first link
+  if (navLinkItems.length > 0) {
+    var firstLink = navLinkItems[0];
+    moveIndicator(firstLink);
+    // Hide it initially, will show on hover
+    setTimeout(function() {
+      navIndicator.style.opacity = '0';
+    }, 100);
+  }
 
   // ============================================================
   // SCROLL REVEAL — Intersection Observer
