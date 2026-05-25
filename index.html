@@ -6,6 +6,7 @@
 <title>NYVORIS — Ciberseguridad Estratégica</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Sora:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <style>
 /* ============================================================
    NYVORIS — Premium Strategic Cybersecurity Landing Page
@@ -1461,6 +1462,23 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Sora', sans-serif; font-weight: 700; }
 .reveal-delay-5 { transition-delay: 0.5s; }
 
 /* ============================================================
+   REDUCED MOTION — Respetar preferencias del usuario
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001s !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001s !important;
+  }
+  .hero-letter { opacity: 1; transform: none; filter: none; animation: none !important; }
+  .hero-badge, .hero-title, .hero-subtitle, .hero-buttons,
+  .hero-indicators, .scroll-hint { opacity: 1; transform: none; animation: none !important; }
+  .reveal { opacity: 1; transform: none; transition: none !important; }
+  .navbar-indicator { display: none !important; }
+  .service-card:hover, .score-card:hover { transform: none !important; }
+}
+
+/* ============================================================
    RESPONSIVE
    ============================================================ */
 @media (max-width: 1024px) {
@@ -2005,64 +2023,121 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Sora', sans-serif; font-weight: 700; }
   'use strict';
 
   // ============================================================
-  // PARTICLES — Global background
+  // PERFORMANCE DETECTION
   // ============================================================
-  const canvas = document.getElementById('bg-canvas');
-  const ctx = canvas.getContext('2d');
-  let particles = [];
-  let animId;
+  var isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+  var cpuCores = navigator.hardwareConcurrency || 4;
+  var deviceMemory = navigator.deviceMemory || 4;
+  var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Nivel de rendimiento: 0 = bajo, 1 = medio, 2 = alto
+  var perfLevel = 2;
+  if (prefersReduced) {
+    perfLevel = -1; // Sin animaciones
+  } else if (isMobile || cpuCores <= 2 || deviceMemory <= 2) {
+    perfLevel = 0; // Bajo
+  } else if (cpuCores <= 4 || deviceMemory <= 4) {
+    perfLevel = 1; // Medio
+  }
+
+  // ============================================================
+  // PARTICLES — Global background (adaptativo)
+  // ============================================================
+  var canvas = document.getElementById('bg-canvas');
+  var ctx = canvas.getContext('2d');
+  var particles = [];
+  var animId;
+  var isPaused = false;
+
+  if (perfLevel === -1) {
+    // Modo reduced-motion: ni siquiera crear el canvas
+    canvas.style.display = 'none';
+  }
 
   function resizeCanvas() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    if (perfLevel <= 0) {
+      // Bajo rendimiento: render a mitad de resolución
+      canvas.width = Math.round(window.innerWidth * 0.5);
+      canvas.height = Math.round(window.innerHeight * 0.5);
+    } else {
+      var dpr = Math.min(window.devicePixelRatio || 1, perfLevel >= 2 ? 2 : 1);
+      canvas.width = window.innerWidth * dpr;
+      canvas.height = window.innerHeight * dpr;
+    }
   }
 
   function createParticles() {
     particles = [];
-    const count = Math.min(100, Math.floor(canvas.width * canvas.height / 12000));
-    for (let i = 0; i < count; i++) {
+    var count;
+    if (perfLevel >= 2) {
+      count = Math.min(80, Math.floor(canvas.width * canvas.height / 15000));
+    } else if (perfLevel === 1) {
+      count = Math.min(35, Math.floor(canvas.width * canvas.height / 25000));
+    } else {
+      count = Math.min(15, Math.floor(canvas.width * canvas.height / 40000));
+    }
+    count = Math.max(5, count);
+
+    var speed = perfLevel >= 2 ? 0.3 : (perfLevel === 1 ? 0.2 : 0.12);
+    var maxR = perfLevel >= 2 ? 2 : 1.5;
+    var maxAlpha = perfLevel >= 2 ? 0.3 : 0.2;
+
+    for (var i = 0; i < count; i++) {
       particles.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        vx: (Math.random() - 0.5) * 0.3,
-        vy: (Math.random() - 0.5) * 0.3,
-        r: Math.random() * 2 + 0.3,
-        alpha: Math.random() * 0.3 + 0.05
+        x: Math.random() * (perfLevel <= 0 ? canvas.width * 2 : canvas.width),
+        y: Math.random() * (perfLevel <= 0 ? canvas.height * 2 : canvas.height),
+        vx: (Math.random() - 0.5) * speed,
+        vy: (Math.random() - 0.5) * speed,
+        r: Math.random() * maxR + 0.3,
+        alpha: Math.random() * maxAlpha + 0.04
       });
     }
   }
 
   function drawParticles() {
+    if (isPaused) {
+      animId = requestAnimationFrame(drawParticles);
+      return;
+    }
+
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    for (let i = 0; i < particles.length; i++) {
-      const p = particles[i];
+    var drawConnections = perfLevel >= 1;
+    var connectDist = perfLevel >= 2 ? 120 : 80;
+
+    for (var i = 0; i < particles.length; i++) {
+      var p = particles[i];
       p.x += p.vx;
       p.y += p.vy;
 
-      if (p.x < 0) p.x = canvas.width;
-      if (p.x > canvas.width) p.x = 0;
-      if (p.y < 0) p.y = canvas.height;
-      if (p.y > canvas.height) p.y = 0;
+      var w = canvas.width;
+      var h = canvas.height;
+
+      if (p.x < 0) p.x = w;
+      if (p.x > w) p.x = 0;
+      if (p.y < 0) p.y = h;
+      if (p.y > h) p.y = 0;
 
       ctx.beginPath();
       ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(91, 192, 235, ${p.alpha})`;
+      ctx.fillStyle = 'rgba(91, 192, 235, ' + p.alpha + ')';
       ctx.fill();
 
-      // Connections
-      for (let j = i + 1; j < particles.length; j++) {
-        const p2 = particles[j];
-        const dx = p.x - p2.x;
-        const dy = p.y - p2.y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist < 150) {
-          ctx.beginPath();
-          ctx.moveTo(p.x, p.y);
-          ctx.lineTo(p2.x, p2.y);
-          ctx.strokeStyle = `rgba(91, 192, 235, ${0.06 * (1 - dist / 150)})`;
-          ctx.lineWidth = 0.5;
-          ctx.stroke();
+      // Connections (solo en perf medium+)
+      if (drawConnections) {
+        for (var j = i + 1; j < particles.length; j++) {
+          var p2 = particles[j];
+          var dx = p.x - p2.x;
+          var dy = p.y - p2.y;
+          var dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < connectDist) {
+            ctx.beginPath();
+            ctx.moveTo(p.x, p.y);
+            ctx.lineTo(p2.x, p2.y);
+            ctx.strokeStyle = 'rgba(91, 192, 235, ' + (0.04 * (1 - dist / connectDist)) + ')';
+            ctx.lineWidth = 0.5;
+            ctx.stroke();
+          }
         }
       }
     }
@@ -2071,15 +2146,31 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Sora', sans-serif; font-weight: 700; }
   }
 
   function initParticles() {
+    if (perfLevel === -1) return;
     resizeCanvas();
     createParticles();
     drawParticles();
   }
 
   initParticles();
+
+  // Pausar cuando la pestaña no está visible
+  document.addEventListener('visibilitychange', function() {
+    if (document.hidden) {
+      isPaused = true;
+      if (animId) cancelAnimationFrame(animId);
+    } else {
+      isPaused = false;
+      if (!animId) drawParticles();
+    }
+  });
+
   window.addEventListener('resize', function() {
+    if (perfLevel === -1) return;
+    cancelAnimationFrame(animId);
     resizeCanvas();
     createParticles();
+    drawParticles();
   });
 
   // ============================================================
